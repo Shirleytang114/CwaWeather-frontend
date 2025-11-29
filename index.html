@@ -152,6 +152,22 @@
             font-weight: bold;
         }
 
+        /* === 金句卡片 === */
+        .golden-sentence-card {
+            background: var(--ac-yellow);
+            border: 4px solid var(--ac-cream);
+            color: var(--ac-brown);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transform: rotate(-1deg);
+        }
+
         /* === 上班族最愛的：快速建議區 === */
         .advice-grid {
             display: grid;
@@ -273,6 +289,9 @@
         <div id="heroCard">
         </div>
 
+        <div id="goldenSentenceCard">
+        </div>
+
         <h3 class="section-title">稍後預報</h3>
         <div class="scroll-container" id="futureForecasts">
         </div>
@@ -290,6 +309,16 @@
             if (weather.includes("雨")) return "🌧️";
             if (weather.includes("雷")) return "⛈️";
             return "🌤️";
+        }
+
+        function getGoldenSentence(weather) {
+            if (!weather) return "今天也要保持好心情喔！";
+            if (weather.includes("晴")) return "陽光普照，正是展翅高飛的好時機！";
+            if (weather.includes("多雲")) return "雲朵點綴天空，記得抬頭看看生活中的小美好。";
+            if (weather.includes("陰")) return "偶爾的陰天，是為了讓陽光更顯珍貴。";
+            if (weather.includes("雨")) return "雨水洗淨大地，也讓心靈沉澱一下吧！";
+            if (weather.includes("雷")) return "雷聲是天空的鼓掌，為你的努力喝采！";
+            return "不論天氣如何，都要活得精彩！";
         }
 
         function getAdvice(rainProb, maxTemp) {
@@ -355,8 +384,15 @@
                             </div>
                         </div>
                     `;
+            
+            // 2. 渲染金句
+            document.getElementById('goldenSentenceCard').innerHTML = `
+                <div class="golden-sentence-card">
+                    "${getGoldenSentence(current.weather)}"
+                </div>
+            `;
 
-            // 2. 渲染稍後預報 (包含明天判斷)
+            // 3. 渲染稍後預報 (包含明天判斷)
             const scrollContainer = document.getElementById('futureForecasts');
             scrollContainer.innerHTML = '';
 
@@ -382,7 +418,7 @@
                         `;
             });
 
-            // 3. 右上角顯示今日日期
+            // 4. 右上角顯示今日日期
             const now = new Date();
             const month = now.getMonth() + 1;
             const date = now.getDate();
